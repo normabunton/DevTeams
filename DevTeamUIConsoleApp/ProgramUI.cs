@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevTeamsProject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,11 @@ namespace DevTeamUIConsoleApp
 {
     class ProgramUI
     {
-        private DevelperContentRepository _contentRepo = new DevelperContentRepository();
+        private DeveloperRepo _contentRepo = new DeveloperRepo();
 
         public void Run()
         {
+            seedContentList();
             Menu();
         }
         private void Menu()
@@ -29,7 +31,7 @@ namespace DevTeamUIConsoleApp
                 switch (input)
                 {
                     case "1":
-                        DisplayUniqueID();
+                        DisplayIdNumber();
                         break;
                     case "2":
                         DisplayFirstName();
@@ -56,14 +58,14 @@ namespace DevTeamUIConsoleApp
                 Console.Clear();
             }
         }
-        private void DisplayUniqueID()
+        private void DisplayDeveloper()
         {
             Console.Clear();
             Developer newContent = new Developer();
 
             Console.WriteLine("Enter your Unique ID:");
             string idAsString = Console.ReadLine();
-            newContent.IdNUmber = double.Parse(idAsString);
+            newContent.IdNumber = double.Parse(idAsString);
 
             Console.WriteLine("Enter your First Name:");
             newContent.FirstName = Console.ReadLine();
@@ -89,34 +91,66 @@ namespace DevTeamUIConsoleApp
                                 "4. Design");
             string teamNameAsString = Console.ReadLine();
             int teamNameAsInt = int.Parse(teamNameAsString);
-            newContent.NameOfTeam = (NameOfTeam)teamNameAsInt;
+            newContent.NameOfTeam = (TeamName)teamNameAsInt;
 
-            _contentRepo.AddContentToList(newContent);
+            _contentRepo.AddDeveloperToList(newContent);
+        }
+
+        private void DisplayIdNumber()
+        {
+            List<Developer> listOfDevelopers = _contentRepo.GetContentList();
+            foreach(Developer content in listOfDevelopers)
+            {
+                Console.WriteLine($"IdNumber: {content.IdNumber}");
+            }
         }
         private void DisplayFirstName()
         {
-            List<Developers> listOfDevelopers = _contentRepo.GetCOntentList();
-            foreach(DeveloperConetnt content in listOfDevelopers)
+            List<Developer> listOfDevelopers = _contentRepo.GetContentList();
+            foreach(Developer content in listOfDevelopers)
             {
-                Console.WriteLine($"FirstName: {content.FirstName} LastName: {content.LastName}");
+                Console.WriteLine($"FirstName: {content.FirstName}");
 
             }
         }
         private void DisplayLastName()
         {
-
+            List<Developer> listOfDevelopers = _contentRepo.GetContentList();
+            foreach(Developer content in listOfDevelopers)
+            {
+                Console.WriteLine($"LastName: {content.LastName}");
+            }
         }
         private void DisplayPluralSightAccess()
         {
+            List<Developer> listOfDevelopers = _contentRepo.GetContentList();
+            foreach(Developer content in listOfDevelopers)
+            {
+                Console.WriteLine($"PluralSightAccess: {content.PluralSightAccess}");
+            }
 
+            const bool V = false;
+            if (!(V))
+            {
+                Console.WriteLine("You need Acces to PluralSight");
+            }
+            
         }
         private void DisplayTeamName()
         {
-
+            List<Developer> listOfDevelopers = _contentRepo.GetContentList();
+            foreach(Developer content in listOfDevelopers)
+            {
+                Console.WriteLine($"TeamName: {content.NameOfTeam}");
+            }
         }
         private void seedContentList()
         {
+            Developer developer1 = new Developer("Norma", "Bunton", 123, true, TeamName.BackEnd);
+            Developer developer2 = new Developer("Sylas", "Bunton", 1234, false, TeamName.FrontEnd);
 
+            _contentRepo.AddDeveloperToList(developer1);
+            _contentRepo.AddDeveloperToList(developer2);
         }
     }
 }
